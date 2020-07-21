@@ -20,6 +20,6 @@ resource "aws_kinesis_stream" "general_comment_data_stream" {
   ]
   tags = {
     application = local.app_name
-    environment = lcoal.env
+    environment = local.env
   }
 }
