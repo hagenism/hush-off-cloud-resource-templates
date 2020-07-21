@@ -1,6 +1,7 @@
-variable "env" {
-  type    = string
-  default = "dev"
+# Reusable expressions 
+locals {
+  app_name = var.app_name
+  env      = var.env
 }
 
 # Configure the AWS Provider
@@ -18,7 +19,7 @@ resource "aws_kinesis_stream" "general_comment_data_stream" {
     "OutgoingBytes",
   ]
   tags = {
-    application = "hush-off"
-    environment = var.env
+    application = local.app_name
+    environment = lcoal.env
   }
 }
