@@ -5,20 +5,37 @@ locals {
 
 # Configure the AWS Provider
 provider "aws" {
-  region  = "us-west-1" # Ireland
+  region = "us-west-1" # Ireland
 }
 
-resource "aws_kinesis_stream" "general_comment_data_stream" {
-  name                = "comment-data-stream"
-  shard_count         = 1
-  retention_period    = 24
-  encryption_type     = "NONE"
-  shard_level_metrics = [
-    "IncomingBytes",
-    "OutgoingBytes",
-  ]
-  tags = {
-    application = local.app_name
-    environment = var.env
-  }
+module "hushOffResourceManager" {
+  source = "./modules/resourceManager"
+  # Params
+  application = local.app_name
+  environment = var.env
+  # Outputs
+}
+
+module "hushOffClassifier" {
+  source = "./modules/classifier"
+  # Params
+  application = local.app_name
+  environment = var.env
+  # Outputs
+}
+
+module "hushOffPipeline" {
+  source = "./modules/pipeline"
+  # Params
+  application = local.app_name
+  environment = var.env
+  # Outputs
+}
+
+module "hushOffFrontend" {
+  source = "./modules/frontend"
+  # Params
+  application = local.app_name
+  environment = var.env
+  # Outputs
 }
