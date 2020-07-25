@@ -1,0 +1,68 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+# Q U E R I E S
+type Query {
+  listResources(userId: ID!): [Resource]
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+  listActiveResources(userId: ID!): [Resource]
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+  listArchivedResources(userId: ID!): [Resource]
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+}
+
+# M U T A T I O N S
+type Mutation {
+  # Resource
+  createResource(input: CreateResourceInput!): Resource
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+  updateResource(input: UpdateResourceInput!): Resource
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+  archiveResource(input: UpdateResourceInput!): Resource
+    @aws_auth(cognito_groups: ["hush-off-default-ug"])
+}
+
+# S U B S C R I P T I O N S
+type Subscription {
+  onCreateResource(id: ID!): Resource @aws_subscribe(mutations: ["createResource"])
+  onUpdateResource(id: ID!): Resource @aws_subscribe(mutations: ["updateResource"])
+  onArchiveResource(id: ID!): Resource @aws_subscribe(mutations: ["archiveResource"])
+}
+
+# I N P U T S
+input CreateResourceInput {
+  id: ID!
+  type: ResourceType!
+  url: String
+  createTime: String!
+  userId: String!
+}
+
+input UpdateResourceInput {
+  id: ID!
+  type: ResourceType
+  url: String
+  isArhived: Int
+  archiveTime: String
+}
+
+# T Y P E S
+type Resource {
+  id: ID!
+  type: ResourceType!
+  url: String
+  createTime: String!
+  isArhived: Int
+  archiveTime: String
+  userId: String!
+}
+
+# E N U M S
+enum ResourceType {
+  youtube
+  twitter
+  discord
+}

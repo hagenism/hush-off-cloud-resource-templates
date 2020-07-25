@@ -8,7 +8,7 @@ resource "aws_kinesis_stream" "general_comment_data_stream" {
     "OutgoingBytes",
   ]
   tags = {
-    application = local.application
+    application = var.application
     environment = var.environment
   }
 }
